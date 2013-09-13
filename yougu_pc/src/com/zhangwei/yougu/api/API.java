@@ -1,4 +1,4 @@
-package com.zhangwei.yougu;
+package com.zhangwei.yougu.api;
 
 import java.sql.Date;
 import java.text.DateFormat;

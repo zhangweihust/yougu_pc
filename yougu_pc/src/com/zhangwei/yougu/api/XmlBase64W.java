@@ -1,4 +1,4 @@
-package com.zhangwei.yougu;
+package com.zhangwei.yougu.api;
 
 import java.io.ByteArrayOutputStream;
 

@@ -1,7 +1,7 @@
 package com.zhangwei.yougu.service;
 
-import com.zhangwei.yougu.API;
 import com.zhangwei.yougu.androidconvert.Log;
+import com.zhangwei.yougu.api.API;
 import com.zhangwei.yougu.pojo.Response;
 
 public class YouguScanThread extends Thread {

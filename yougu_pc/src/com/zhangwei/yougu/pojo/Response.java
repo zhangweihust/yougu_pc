@@ -60,7 +60,7 @@ public class Response {
 		public int rank; //"rank":41668,
 		public int resetTip;//"resetTip":0,
 		public int vipTip;//"vipTip":0,
-		int vipValidDays; //"vipValidDays":0,
+		public int vipValidDays; //"vipValidDays":0,
 
 	}
 	
