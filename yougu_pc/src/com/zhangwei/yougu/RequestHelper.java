@@ -37,7 +37,7 @@ public class RequestHelper {
 	//ts: 1378113440801538458
 	    //1378991963020
 	public String Get(String host, String url, String sessionid, String userid, String ak, String did, String am) {
-		Log.e(TAG, "Get url:" + url);
+		//Log.e(TAG, "Get url:" + url);
 		HttpClient httpclient = new DefaultHttpClient();
 		
 		HttpGet httpget = new HttpGet("http://" + host + url);
@@ -102,7 +102,7 @@ public class RequestHelper {
 			e.printStackTrace();
 		}
 		
-		Log.e(TAG, ret);
+		//Log.e(TAG, ret);
 
 		return ret;
 
