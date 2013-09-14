@@ -64,15 +64,15 @@ public class TipWindow extends JDialog {
 		screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(
 				this.getGraphicsConfiguration());
 		x = (int) (dim.getWidth() - width - 3);
-		y = (int) (dim.getHeight() - screenInsets.bottom - 3);
+		y = (int) (dim.getHeight() - screenInsets.bottom - 3 - TipWindowHelper.cur_add_size_y);
 		initComponents();
 /*		feaMap = new HashMap<String, String>();
 		feaMap.put("release", sdf.format(new Date()));*/
 	}
 
 	public void run() {
-		x = (int) (dim.getWidth() - width - 3);
-		y = (int) (dim.getHeight() - screenInsets.bottom - 3);
+/*		x = (int) (dim.getWidth() - width - 3);
+		y = (int) (dim.getHeight() - screenInsets.bottom - 3);*/
 		
 		for (int i = 0; i <= height; i += 10) {
 			try {

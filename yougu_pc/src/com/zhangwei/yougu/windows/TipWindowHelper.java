@@ -33,29 +33,9 @@ import com.zhangwei.yougu.pojo.Response.RespFindActionListByTimeVip_item;
  * @author Tom
  */
 public class TipWindowHelper {
-/*	private Map<String, String> feaMap = null;
-	private Point oldP; // 上一次坐标,拖动窗口时用
-	//private TipWindow tw = null; // 提示框
-	private ImageIcon img = null;// 图像组件
-	private JLabel imgLabel = null; // 背景图片标签
-	private JPanel headPan = null;
-	private JPanel feaPan = null;
-	private JPanel btnPan = null;
-	private JLabel title = null;
-	private JLabel head = null;
-	private JLabel close = null;// 关闭按钮
-	private JTextArea feature = null;
-	private JScrollPane jfeaPan = null;
-	private JLabel releaseLabel = null;
-	private JLabel update = null;
-	private SimpleDateFormat sdf = null;*/
 
-	{
-		/*		sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		feaMap = new HashMap<String, String>();
-		feaMap.put("release", sdf.format(new Date()));*/
-		
-	}
+	private ArrayList<TipWindow> pops;
+	public static int cur_add_size_y = 0;
 	
 	private static TipWindowHelper ins = null;
 	
@@ -134,14 +114,26 @@ public class TipWindowHelper {
 		// 新建300x250的消息提示框
 		// Tom, 设置整个提示框大小
 		TipWindow tw = new TipWindow(300, 250);
+		pops.add(tw);
 		//handle(urls);
 		tw.init(tw, str_title, str_action, str_content_title, str_content, urls, date);
 		
 		tw.run();
+		
+		cur_add_size_y+=5;
+	}
+	
+	public void clear(){
+		if(pops.size()>0){
+			for(TipWindow  tw: pops){
+				tw.close();
+			}
+		}
+		cur_add_size_y = 0;
 	}
 
 	private TipWindowHelper() {
-
+		pops = new ArrayList<TipWindow>();
 	}
 	
 

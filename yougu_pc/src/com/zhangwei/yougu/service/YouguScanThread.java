@@ -130,8 +130,11 @@ public class YouguScanThread extends Thread {
 			}
 		}
 		
+		TipWindowHelper.getInstance().clear();
+		
 		//step5: find actions in loop 
 		while(stop){
+
 			for(Entry<String, RespGetAccount>  item : ai.people_accounts.entrySet()){
 				String people_userid = item.getKey();
 				RespGetAccount stock_acct = item.getValue();
@@ -162,7 +165,7 @@ public class YouguScanThread extends Thread {
 			}
 			
 			ai.persist();
-			
+
 			try {
 				Thread.sleep(30000);
 			} catch (InterruptedException e) {
