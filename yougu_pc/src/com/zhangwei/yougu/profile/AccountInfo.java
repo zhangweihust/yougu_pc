@@ -23,10 +23,10 @@ public class AccountInfo {
 	private static transient AccountInfo ins = null;
 	private static transient final String TAG = "AccountInfo";
 	/**************************************************************/
-	public String username;
-	public String passwd;
-	public String userid;
-	public String sessionid;
+	public String my_username;
+	public String my_passwd;
+	public String my_userid;
+	public String my_sessionid;
 	
 	public ArrayList<RespShowMyAttation_item> my_attations;
 	public HashMap<String, RespGetAccount> people_accounts;
@@ -55,7 +55,7 @@ public class AccountInfo {
 	}
 	
 	synchronized public boolean isLogin(){
-		if(username==null || passwd==null || userid==null || sessionid==null){
+		if(my_username==null || my_passwd==null || my_userid==null || my_sessionid==null){
 			return false;
 		}else{
 			return true;
@@ -83,18 +83,20 @@ public class AccountInfo {
 		ArrayList<RespFindActionListByTimeVip_item> ret = new ArrayList<RespFindActionListByTimeVip_item>();
 		if(actions!=null && "0000".equals(actions.status) && actions.result!=null && actions.result.length>0){
 			ActionsRecord ar = null;
-			for(RespFindActionListByTimeVip_item action_item : actions.result){
+			if(!people_actions.containsKey(key)){
+				ar = new ActionsRecord();
+			}else{
 				ar = people_actions.get(key);
-				if(ar==null){
-					ar = new ActionsRecord();
-					people_actions.put(key, ar);
-				}
+			}
+
+			for(RespFindActionListByTimeVip_item action_item : actions.result){
+
 				boolean flag = ar.add(action_item);
 				if(!flag){
 					ret.add(action_item);
 				}
 			}
-			
+			people_actions.put(key, ar);
 
 
 		}

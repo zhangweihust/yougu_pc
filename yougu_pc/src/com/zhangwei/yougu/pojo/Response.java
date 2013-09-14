@@ -1,7 +1,7 @@
 package com.zhangwei.yougu.pojo;
 
 public class Response {
-	public static class RespQueryStockList{
+	public  class RespQueryStockList{
 		public String status; //"status":"0000";
 		public String message; //"message":"成功",
 		public int num; //"num":322,
@@ -22,7 +22,7 @@ public class Response {
 		public String secondType;//"secondType":"0"
 	}
 	
-	public static class RespLogin{
+	public  class RespLogin{
 		public String status; //"status":"0000",
 		public String message;//"message":"登陆成功.",
 		public String sessionid;//"sessionid":"20130913095904538458",
@@ -30,7 +30,7 @@ public class Response {
 		public String nickname; //"nickname":"zweric"
 	}
 	
-	public static class RespGetAccount{
+	public class RespGetAccount{
 		public String status;//"status":"0000",
 		public String message;//"message":"OK",
 		public RespGetAccount_item[] result;//"result":[{"account_id":"95126749104395000","init_fund":100000,"join_time":"2013-08-30 00:03:49","match_id":"1","match_name":"普通账户","u_id":"538458","u_nick":"zweric","vip_valid_days":0}]}
@@ -47,7 +47,7 @@ public class Response {
 		public int vip_valid_days;// "vip_valid_days":0
 	}
 	
-	public static class RespShowMyMoney{
+	public class RespShowMyMoney{
 		public String status; //"status":"0000",
 		public String message;//"message":"查询成功.",
 		
@@ -64,7 +64,7 @@ public class Response {
 
 	}
 	
-	public static class RespShowMyAttation{
+	public class RespShowMyAttation{
 		public String  status; //"status":"0000",
 		public String  message; //"message":"查询返回成功.",
 		public RespShowMyAttation_item[] result;
@@ -80,7 +80,7 @@ public class Response {
 		public String zyl; //"zyl":"110.40%"
 	}
 	
-	public static class RespShowMyStock{
+	public class RespShowMyStock{
 		public String status; //"status":"0000",
 		public String message; //"message":"持仓查询成功."
 		public RespShowMyStock_item[] result;
@@ -103,7 +103,7 @@ public class Response {
 		public String zxsz;//"zxsz":"45986702.47" 最新市值
 	}
 	
-	public static class RespFindActionListByTimeVip{
+	public class RespFindActionListByTimeVip{
 		public String status; //"status":"0000",
 		public String message; //"message":"成功",
 		public int num;//"num":20,
