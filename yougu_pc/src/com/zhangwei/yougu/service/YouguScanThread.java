@@ -39,7 +39,14 @@ public class YouguScanThread extends Thread {
 		AccountInfo ai = AccountInfo.getInstance();
 		
 		//step1: login:
-		Response.RespLogin resp = API.Login(Product_ID, username, passwd, sessionid);
+		Response.RespLogin resp = null;
+		try{
+		    resp = API.Login(Product_ID, username, passwd, sessionid);
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		if(resp!=null && "0000".equals(resp.status)){
 			sessionid = resp.sessionid;
 			userid = resp.userid;
@@ -59,7 +66,12 @@ public class YouguScanThread extends Thread {
 		ai.clear();
 		
 		//step2: get my attation people
-		Response.RespShowMyAttation resp_my_attation = API.ShowMyAttention(Product_ID, sessionid, userid);
+		Response.RespShowMyAttation resp_my_attation = null;
+		try{
+			resp_my_attation = API.ShowMyAttention(Product_ID, sessionid, userid);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 		if(resp_my_attation!=null && "0000".equals(resp_my_attation.status)){
 			Log.i(TAG, "ShowMyAttention ok!");
@@ -70,16 +82,21 @@ public class YouguScanThread extends Thread {
 		}
 		
 		//step3: get the people's account info
-		for(RespShowMyAttation_item attation : ai.my_attations){
-			Response.RespGetAccount stock_acct = API.GetAllAccounts(Product_ID, attation.userid, userid, sessionid);
-			if("0000".equals(stock_acct.status)){
-				Log.i(TAG, "GetAllAccounts ok :" + attation.nickname);
-				ai.updatePeopleAccount(attation.userid, stock_acct);
+		try{
+			for(RespShowMyAttation_item attation : ai.my_attations){
+				Response.RespGetAccount stock_acct = API.GetAllAccounts(Product_ID, attation.userid, userid, sessionid);
+				if("0000".equals(stock_acct.status)){
+					Log.i(TAG, "GetAllAccounts ok :" + attation.nickname);
+					ai.updatePeopleAccount(attation.userid, stock_acct);
 
-			}else{
-				Log.e(TAG, "GetAllAccounts fail :" + attation.nickname);
-			}			
+				}else{
+					Log.e(TAG, "GetAllAccounts fail :" + attation.nickname);
+				}			
+			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
+
 		
 		//step4: find actions in loop 
 		
@@ -87,29 +104,31 @@ public class YouguScanThread extends Thread {
 			for(Entry<String, RespGetAccount>  item : ai.people_accounts.entrySet()){
 				String people_userid = item.getKey();
 				RespGetAccount stock_acct = item.getValue();
-				if(stock_acct!=null && stock_acct.result!=null && stock_acct.result.length>0){
-					for(RespGetAccount_item stock_acct_item:stock_acct.result){
-						Response.RespFindActionListByTimeVip action = API.FindActionListByTimeVip(Product_ID, userid, sessionid, people_userid, stock_acct_item.match_id);
-						if("0000".equals(action.status)){
-							ArrayList<RespFindActionListByTimeVip_item> newActions = ai.updatePeopleAction(userid + "_" + stock_acct_item.match_id, action);
-							if(newActions!=null && newActions.size()>0){
-								for(RespFindActionListByTimeVip_item  newActionItem : newActions){
-									Log.e(TAG, "new actions:" + newActionItem.text);
+				try{
+					if(stock_acct!=null && stock_acct.result!=null && stock_acct.result.length>0){
+						for(RespGetAccount_item stock_acct_item:stock_acct.result){
+							Response.RespFindActionListByTimeVip action = API.FindActionListByTimeVip(Product_ID, userid, sessionid, people_userid, stock_acct_item.match_id);
+							if("0000".equals(action.status)){
+								ArrayList<RespFindActionListByTimeVip_item> newActions = ai.updatePeopleAction(userid + "_" + stock_acct_item.match_id, action);
+								if(newActions!=null && newActions.size()>0){
+									for(RespFindActionListByTimeVip_item  newActionItem : newActions){
+										Log.e(TAG, "new actions:" + newActionItem.text);
+									}
+									
 								}
-								
 							}
 						}
 					}
-					
-
-					
+				}catch(Exception e){
+					e.printStackTrace();
 				}
+
 			}
 			
 			ai.persist();
 			
 			try {
-				Thread.sleep(60000);
+				Thread.sleep(30000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

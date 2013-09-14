@@ -60,7 +60,7 @@ public class SDCardStorageManager {
 		if(!appDataPath.exists()) {
 			appDataPath.mkdirs();
 		}
-		load(app_data_dir);
+		//load(app_data_dir);
 	
 
 	}

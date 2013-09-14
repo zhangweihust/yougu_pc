@@ -67,7 +67,7 @@ public class API {
 	 * Cache-Control: No-Cache
 	 * Expires: Thu, 01 Jan 1970 00:00:00 GMT
 	 * {"status":"0000","message":"ok","result":[{"id":1,"name":"..............................","startdate":"2013-08-01","enddate":"2013-10-31"}]}*/
-	public static void QueryEvents(String Product_ID){
+	public static void QueryEvents(String Product_ID) throws Exception{
 		String url_prefix = "/youguu/events/queryevents/";	
 		StringBuffer sb = new StringBuffer();
 		sb.append(url_prefix);
@@ -90,7 +90,7 @@ public class API {
 	 * Connection: Keep-Alive
 	 * User-Agent: Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1
 	 * */
-	public static String DoUpdate(String userid, String sessionid, String imei){
+	public static String DoUpdate(String userid, String sessionid, String imei) throws Exception{
 		String url_prefix = "/jhss/member/doupdate/";
 		String Product_ID = "403001006";
 	
@@ -115,7 +115,7 @@ public class API {
 	 * resp:
 	 * 太大，需要解码
 	 * */
-	public static String QueryStockList(String Product_ID, String date_str){
+	public static String QueryStockList(String Product_ID, String date_str) throws Exception{
 		//2013-7-2 9:10:15   ---  1372727415000
 		String url_prefix = "/youguu/quote/querystocklist/";
 		//String date = "1362727415000"; //2013-7-2 9:10:15
@@ -147,7 +147,7 @@ public class API {
 	 * Connection: Keep-Alive
 	 * User-Agent: Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1
 	 * */
-	public static String DoUserBack(String Product_ID, String imei){
+	public static String DoUserBack(String Product_ID, String imei) throws Exception{
 		String url_prefix = "/jhss/member/douserback/";
 /*		String Product_ID = "403001006";
 		String imei = "862620027046913"; */
@@ -187,7 +187,7 @@ public class API {
 	 * Expires: Thu, 01 Jan 1970 00:00:00 GMT
 	 * ~9XqCrW-_sWQFaHaBoF85oBaoaUPOrVu_fSLByBmXSm1eS4mTBcHPDfqwaE7CrSQGrTP0mTPJaHaBqF89rF8cpFbBpFMRtGbNrH8JtH7BkBfOrSQChS7ByBbNrH8JtH7BkBexhRulmRPtdBbgaXfWdVedbBfs
 	 * */
-	public static Response.RespLogin Login(String Product_ID, String username, String passwd, String sessionid){
+	public static Response.RespLogin Login(String Product_ID, String username, String passwd, String sessionid) throws Exception{
 		String url_prefix = "/jhss/member/dologonnew/";
 /*		String Product_ID = "403001006";
 		String user = "zweric"; 
@@ -214,7 +214,7 @@ public class API {
 	 * Host: mncg.youguu.com
 	 * Connection: Keep-Alive
 	 * */
-	public static Response.RespGetAccount GetAllAccounts(String Product_ID, String target_userid, String my_userid, String sessionid){
+	public static Response.RespGetAccount GetAllAccounts(String Product_ID, String target_userid, String my_userid, String sessionid) throws Exception{
 		String url_prefix = "/youguu/simtrade/getAllAccounts/";
 /*		String Product_ID = "403001006";*/
 	
@@ -245,7 +245,7 @@ public class API {
 	 * Connection: Keep-Alive
 	 * User-Agent: Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1
 	 * */
-	public static String ShowMyMoney(String Product_ID, String sessionid, String my_userid, String target_userid){
+	public static String ShowMyMoney(String Product_ID, String sessionid, String my_userid, String target_userid) throws Exception{
 		String url_prefix = "/youguu/simtrade/showmymoney/";
 		/*String Product_ID = "403001006";*/
 /*		SimpleDateFormat dateformat=new SimpleDateFormat("yyyyMMddHHmmss");
@@ -277,7 +277,7 @@ public class API {
 	 * ts: 1378991626031538458
 	 * Host: mncg.youguu.com
 	 * */
-	public static String Doquery(String Product_ID, String sessionid, String my_userid, String target_userid){
+	public static String Doquery(String Product_ID, String sessionid, String my_userid, String target_userid) throws Exception{
 		String url_prefix = "/youguu/simtrade/doquery/";
 		String userid = "538458"; 
 
@@ -317,7 +317,7 @@ public class API {
 	 * Host: mncg.youguu.com
 	 * Connection: Keep-Alive
 	 * User-Agent: Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1*/
-	public static Response.RespShowMyAttation ShowMyAttention(String Product_ID , String sessionid, String my_userid){
+	public static Response.RespShowMyAttation ShowMyAttention(String Product_ID , String sessionid, String my_userid) throws Exception{
 		String url_prefix = "/youguu/attention/showmyattention/";
 
 		StringBuffer sb = new StringBuffer();
@@ -347,7 +347,7 @@ public class API {
 	 * Connection: Keep-Alive
 	 * User-Agent: Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1
 	 * */
-	public static Response.RespShowMyStock ShowMyStock(String Product_ID, String my_userid, String sessionid, String target_userid, String type){
+	public static Response.RespShowMyStock ShowMyStock(String Product_ID, String my_userid, String sessionid, String target_userid, String type) throws Exception{
 		String url_prefix = "/youguu/simtrade/showmystock/";
 
 		StringBuffer sb = new StringBuffer();
@@ -378,7 +378,7 @@ public class API {
 	 * Connection: Keep-Alive
 	 * User-Agent: Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1
 	 * */
-	public static Response.RespFindActionListByTimeVip FindActionListByTimeVip(String Product_ID, String my_userid, String sessionid, String target_userid, String type){
+	public static Response.RespFindActionListByTimeVip FindActionListByTimeVip(String Product_ID, String my_userid, String sessionid, String target_userid, String type) throws Exception{
 		String url_prefix = "/youguu/attention/findactionlistbytimevip/";
 		StringBuffer sb = new StringBuffer();
 		sb.append(url_prefix);

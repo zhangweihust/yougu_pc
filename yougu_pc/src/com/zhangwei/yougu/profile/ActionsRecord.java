@@ -2,15 +2,19 @@ package com.zhangwei.yougu.profile;
 
 import java.util.ArrayList;
 
+import com.zhangwei.yougu.androidconvert.Log;
 import com.zhangwei.yougu.pojo.Response.RespFindActionListByTimeVip_item;
 
 public class ActionsRecord {
+	private transient static final String TAG = "ActionsRecord";
+	private transient int limit_size;
+	
 	private ArrayList<RespFindActionListByTimeVip_item> list;
-	private int limit_size;
+
 	
 	public ActionsRecord(){
 		list = new ArrayList<RespFindActionListByTimeVip_item>();
-		limit_size = 20;
+		limit_size = 100;
 	}
 	
 	/**
@@ -40,6 +44,7 @@ public class ActionsRecord {
 			list.remove(0);
 		}
 		
+		//Log.i(TAG, "item:" + item.id + ", found:" + found);
 		return found;
 	}
 
