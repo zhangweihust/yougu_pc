@@ -11,6 +11,7 @@ import com.zhangwei.yougu.pojo.Response.RespGetAccount;
 import com.zhangwei.yougu.pojo.Response.RespGetAccount_item;
 import com.zhangwei.yougu.pojo.Response.RespShowMyAttation_item;
 import com.zhangwei.yougu.profile.AccountInfo;
+import com.zhangwei.yougu.windows.TipWindowHelper;
 
 public class YouguScanThread extends Thread {
 	private static final String TAG = "YouguScanThread";
@@ -105,6 +106,7 @@ public class YouguScanThread extends Thread {
 				RespGetAccount stock_acct = item.getValue();
 				try{
 					if(stock_acct!=null && stock_acct.result!=null && stock_acct.result.length>0){
+						ArrayList<RespFindActionListByTimeVip_item> newPeopleActions = new ArrayList<RespFindActionListByTimeVip_item>();
 						for(RespGetAccount_item stock_acct_item:stock_acct.result){
 							Response.RespFindActionListByTimeVip action = API.FindActionListByTimeVip(Product_ID, my_userid, my_sessionid, people_userid, stock_acct_item.match_id);
 							if("0000".equals(action.status)){
@@ -114,9 +116,13 @@ public class YouguScanThread extends Thread {
 										Log.e(TAG, "new actions:" + newActionItem.text);
 									}
 									
+									newPeopleActions.addAll(newActions);
+									
 								}
 							}
 						}
+						TipWindowHelper.getInstance().show(newPeopleActions);
+						
 					}
 				}catch(Exception e){
 					e.printStackTrace();
