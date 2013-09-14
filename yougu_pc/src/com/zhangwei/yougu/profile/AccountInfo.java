@@ -2,9 +2,12 @@ package com.zhangwei.yougu.profile;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.zhangwei.yougu.androidconvert.Log;
 import com.zhangwei.yougu.pojo.Response;
+import com.zhangwei.yougu.pojo.Response.RespGetAccount;
+import com.zhangwei.yougu.pojo.Response.RespGetAccount_item;
 import com.zhangwei.yougu.pojo.Response.RespShowMyAttation_item;
 import com.zhangwei.yougu.storage.SDCardStorageManager;
 
@@ -24,6 +27,7 @@ public class AccountInfo {
 	public String sessionid;
 	
 	public ArrayList<RespShowMyAttation_item> my_attations;
+	public HashMap<String, RespGetAccount> people_accounts;
 	
 	
 	
@@ -43,6 +47,7 @@ public class AccountInfo {
 	
 	private AccountInfo(){
 		my_attations = new ArrayList<RespShowMyAttation_item>();
+		people_accounts = new HashMap<String, RespGetAccount>();
 	}
 	
 	synchronized public boolean isLogin(){
@@ -55,11 +60,21 @@ public class AccountInfo {
 	
 	synchronized public void updateShowMyAttation(Response.RespShowMyAttation resp){
 		if(resp!=null && resp.result!=null && resp.result.length>0){
-			my_attations.clear();
 			for(RespShowMyAttation_item item : resp.result){
 				my_attations.add(item);
 			}
 		}
+	}
+	
+	synchronized public void updatePeopleAccount(String target_userid, RespGetAccount account){
+		if(target_userid!=null && account!=null && "0000".equals(account.status)){
+			people_accounts.put(target_userid, account);
+		}
+	}
+	
+	synchronized public void clear(){
+		my_attations.clear();
+		people_accounts.clear();
 	}
 	
 	

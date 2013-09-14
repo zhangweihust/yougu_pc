@@ -214,7 +214,7 @@ public class API {
 	 * Host: mncg.youguu.com
 	 * Connection: Keep-Alive
 	 * */
-	public static String GetAllAccounts(String Product_ID, String target_userid, String my_userid, String sessionid){
+	public static Response.RespGetAccount GetAllAccounts(String Product_ID, String target_userid, String my_userid, String sessionid){
 		String url_prefix = "/youguu/simtrade/getAllAccounts/";
 /*		String Product_ID = "403001006";*/
 	
@@ -226,10 +226,13 @@ public class API {
 		
 		String url = sb.toString();
 		
-		return RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null);
+		byte[] ret = XmlBase64W.decode(RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null));
 		/**
 		 * {"status":"0000","message":"OK","result":[{"account_id":"95126749104395000","init_fund":100000,"join_time":"2013-08-30 00:03:49","match_id":"1","match_name":"普通账户","u_id":"538458","u_nick":"zweric","vip_valid_days":0}]}
 */
+		
+		Gson gson = new Gson();
+		return gson.fromJson(new String(ret), Response.RespGetAccount.class);
 	}
 	
 	/**
@@ -344,7 +347,7 @@ public class API {
 	 * Connection: Keep-Alive
 	 * User-Agent: Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1
 	 * */
-	public static String ShowMyStock(String Product_ID, String my_userid, String sessionid, String target_userid, String type){
+	public static Response.RespShowMyStock ShowMyStock(String Product_ID, String my_userid, String sessionid, String target_userid, String type){
 		String url_prefix = "/youguu/simtrade/showmystock/";
 
 		StringBuffer sb = new StringBuffer();
@@ -359,9 +362,10 @@ public class API {
 		
 		String url = sb.toString();
 		
-		return RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null);
+		byte[] ret =  XmlBase64W.decode(RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null));
 //{"status":"0000","message":"持仓查询成功.","result":[{"cbj":"8.84","closePrice":"9.03","djs":"0","dqcb":"47740347.75","gfye":"5397500","kygf":"5397500","markUp":"-5.65%","stockCode":"600708","stockName":"海博股份","yk":"-1753645.28","ykl":"-3.67%","zts":"0","zxj":"8.52","zxsz":"45986702.47"}]}
-
+		Gson gson = new Gson();
+		return gson.fromJson(new String(ret), Response.RespShowMyStock.class);
 	}
 	
 	/**
@@ -374,7 +378,7 @@ public class API {
 	 * Connection: Keep-Alive
 	 * User-Agent: Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1
 	 * */
-	public static String FindActionListByTimeVip(String Product_ID, String my_userid, String sessionid, String target_userid, String type){
+	public static Response.RespFindActionListByTimeVip FindActionListByTimeVip(String Product_ID, String my_userid, String sessionid, String target_userid, String type){
 		String url_prefix = "/youguu/attention/findactionlistbytimevip/";
 		StringBuffer sb = new StringBuffer();
 		sb.append(url_prefix);
@@ -396,7 +400,9 @@ public class API {
 		
 		String url = sb.toString();
 		
-		return RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null);
-
+		byte[] ret = XmlBase64W.decode(RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null));
+		
+		Gson gson = new Gson();
+		return gson.fromJson(new String(ret), Response.RespFindActionListByTimeVip.class);
 	}
 }
