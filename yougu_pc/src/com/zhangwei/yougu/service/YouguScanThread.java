@@ -110,7 +110,6 @@ public class YouguScanThread extends Thread {
 						RespShowMyMoney money = API.ShowMyMoney(Product_ID, my_sessionid, my_userid, people_userid, stock_acct_item.match_id);
 					
 						if("0000".equals(money.status)){
-							Log.i(TAG, "RespShowMyMoney ok");
 							if("1".equals(stock_acct_item.match_id)){
 								sb.append(" 普:" + money.zyl);
 							}else if("2".equals(stock_acct_item.match_id)){

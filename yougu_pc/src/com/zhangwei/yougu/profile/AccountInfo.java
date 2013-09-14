@@ -91,6 +91,7 @@ public class AccountInfo {
 	 * */
 	synchronized public ArrayList<RespFindActionListByTimeVip_item> updatePeopleAction(String key, RespFindActionListByTimeVip actions){
 		ArrayList<RespFindActionListByTimeVip_item> ret = new ArrayList<RespFindActionListByTimeVip_item>();
+		boolean hasNew = false;
 		if(actions!=null && "0000".equals(actions.status) && actions.result!=null && actions.result.length>0){
 			ActionsRecord ar = null;
 			if(!people_actions.containsKey(key)){
@@ -102,8 +103,10 @@ public class AccountInfo {
 			for(RespFindActionListByTimeVip_item action_item : actions.result){
 
 				boolean flag = ar.add(action_item);
+				ret.add(action_item);
 				if(!flag){
-					ret.add(action_item);
+					hasNew = true;
+					//ret.add(action_item);
 				}
 			}
 			people_actions.put(key, ar);
@@ -111,8 +114,12 @@ public class AccountInfo {
 
 		}
 
-		
-		return ret;
+		if(hasNew){
+			return ret;
+		}else{
+			return null;
+		}
+
 	}
 	
 	synchronized public String getZYL(String people_userid){
@@ -122,6 +129,7 @@ public class AccountInfo {
 	synchronized public void clear(){
 		my_attations.clear();
 		people_accounts.clear();
+		//people_actions.clear();
 		people_money.clear();
 	}
 	

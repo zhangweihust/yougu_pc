@@ -10,8 +10,11 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +77,11 @@ public class TipWindowHelper {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			SimpleDateFormat sdf2 = new SimpleDateFormat("MM-dd HH:mm");
+			SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Calendar calendar=java.util.Calendar.getInstance();
+			calendar.roll(java.util.Calendar.DAY_OF_YEAR, 0);
+			long today_long = calendar.getTime().getTime();
 			
 			ArrayList<String> urls = new ArrayList<String>();
 			
@@ -92,7 +100,29 @@ public class TipWindowHelper {
 				double money = Double.valueOf(text[5]) / 10000;
 				str_content.append(money + "万元");
 				str_content.append("\n");
-				urls.add("http://stockhtm.finance.qq.com/sstock/ggcx/" + text[2] + ".shtml");
+				
+				if(action_time>today_long){
+					String url = "http://stockhtm.finance.qq.com/sstock/ggcx/" + text[2] + ".shtml";
+					boolean found = false;
+					if(urls.size()>0){
+						for(String i : urls){
+							if(url.equals(i)){
+								found = true;
+								break;
+							}
+						}
+						
+					}
+					
+					if(!found){
+						urls.add(url);
+					}
+
+				}
+
+
+			
+				
 			}
 			
 			show(str_title, str_action, people_zyl, str_content.toString(), urls, sdf.format(new Date(action_time)));
