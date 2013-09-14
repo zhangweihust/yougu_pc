@@ -31,6 +31,7 @@ public class AccountInfo {
 	public ArrayList<RespShowMyAttation_item> my_attations;
 	public HashMap<String, RespGetAccount> people_accounts;
 	public HashMap<String, ActionsRecord> people_actions;
+	public HashMap<String, String> people_money;
 	
 	
 	
@@ -52,6 +53,7 @@ public class AccountInfo {
 		my_attations = new ArrayList<RespShowMyAttation_item>();
 		people_accounts = new HashMap<String, RespGetAccount>();
 		people_actions = new HashMap<String, ActionsRecord>();
+		people_money = new HashMap<String, String>();
 	}
 	
 	synchronized public boolean isLogin(){
@@ -74,6 +76,14 @@ public class AccountInfo {
 		if(target_userid!=null && account!=null && "0000".equals(account.status)){
 			people_accounts.put(target_userid, account);
 		}
+	}
+	
+	/**
+	 *  记录个人的几个帐户盈利情况
+	 * */
+	synchronized public void updatePeopleMoney(String people_userid, String zyl_text) {
+		// TODO Auto-generated method stub
+		people_money.put(people_userid, zyl_text);
 	}
 	
 	/**
@@ -105,9 +115,14 @@ public class AccountInfo {
 		return ret;
 	}
 	
+	synchronized public String getZYL(String people_userid){
+		return people_money.get(people_userid);
+	}
+	
 	synchronized public void clear(){
 		my_attations.clear();
 		people_accounts.clear();
+		people_money.clear();
 	}
 	
 	
@@ -115,4 +130,6 @@ public class AccountInfo {
 		Log.e(TAG, "AccountInfo:  persist!");
 		SDCardStorageManager.getInstance().putItem(null, AccountInfoKey, ins, AccountInfo.class);
 	}
+
+
 }

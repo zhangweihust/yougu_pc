@@ -245,7 +245,7 @@ public class API {
 	 * Connection: Keep-Alive
 	 * User-Agent: Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1
 	 * */
-	public static String ShowMyMoney(String Product_ID, String sessionid, String my_userid, String target_userid) throws Exception{
+	public static Response.RespShowMyMoney ShowMyMoney(String Product_ID, String sessionid, String my_userid, String target_userid, String type) throws Exception{
 		String url_prefix = "/youguu/simtrade/showmymoney/";
 		/*String Product_ID = "403001006";*/
 /*		SimpleDateFormat dateformat=new SimpleDateFormat("yyyyMMddHHmmss");
@@ -260,13 +260,17 @@ public class API {
 		sb.append("/");
 		sb.append(XmlBase64W.encode(target_userid.getBytes()));
 		sb.append("/");
-		sb.append(XmlBase64W.encode("1".getBytes()));
+		sb.append(XmlBase64W.encode(type.getBytes()));
 		
 		String url = sb.toString();
 		
-		return RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null);
+		byte[] ret = XmlBase64W.decode(RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null));
 		/**out:{"status":"0101","message":"你的账户已在别处登录，若非本人操作，请及时修改密码"}*/
 		/**{"cgsz":"111241.00","fdyk":"11844.67","message":"查询成功.","rank":41668,"resetTip":0,"status":"0000","vipTip":0,"vipValidDays":0,"zjye":"638.22","zyl":"11.88%","zzc":"111879.22"}*/
+		
+		Gson gson = new Gson();
+		return gson.fromJson(new String(ret), Response.RespShowMyMoney.class);
+	
 	}
 	
 	/**

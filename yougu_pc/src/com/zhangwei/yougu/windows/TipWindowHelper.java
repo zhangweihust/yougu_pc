@@ -64,7 +64,7 @@ public class TipWindowHelper {
 		return ins;
 	}
 	
-	public void show(ArrayList<RespFindActionListByTimeVip_item> newPeopleActions) {
+	public void show(String people_zyl, ArrayList<RespFindActionListByTimeVip_item> newPeopleActions) {
 		// TODO Auto-generated method stub
 		if(newPeopleActions!=null && newPeopleActions.size()>0){
 			String str_title = null;
@@ -95,7 +95,7 @@ public class TipWindowHelper {
 				urls.add("http://stockhtm.finance.qq.com/sstock/ggcx/" + text[2] + ".shtml");
 			}
 			
-			show(str_title, str_action, "str_content_title", str_content.toString(), urls, sdf.format(new Date(action_time)));
+			show(str_title, str_action, people_zyl, str_content.toString(), urls, sdf.format(new Date(action_time)));
 		}
 	}
 	

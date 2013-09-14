@@ -10,6 +10,7 @@ import com.zhangwei.yougu.pojo.Response.RespFindActionListByTimeVip_item;
 import com.zhangwei.yougu.pojo.Response.RespGetAccount;
 import com.zhangwei.yougu.pojo.Response.RespGetAccount_item;
 import com.zhangwei.yougu.pojo.Response.RespShowMyAttation_item;
+import com.zhangwei.yougu.pojo.Response.RespShowMyMoney;
 import com.zhangwei.yougu.profile.AccountInfo;
 import com.zhangwei.yougu.windows.TipWindowHelper;
 
@@ -97,9 +98,40 @@ public class YouguScanThread extends Thread {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-
 		
-		//step4: find actions in loop 
+		//step4: get people's money 
+		for(Entry<String, RespGetAccount>  item : ai.people_accounts.entrySet()){
+			String people_userid = item.getKey();
+			RespGetAccount stock_acct = item.getValue();
+			try{
+				if(stock_acct!=null && stock_acct.result!=null && stock_acct.result.length>0){
+					StringBuilder sb = new StringBuilder();
+					for(RespGetAccount_item stock_acct_item:stock_acct.result){
+						RespShowMyMoney money = API.ShowMyMoney(Product_ID, my_sessionid, my_userid, people_userid, stock_acct_item.match_id);
+					
+						if("0000".equals(money.status)){
+							Log.i(TAG, "RespShowMyMoney ok");
+							if("1".equals(stock_acct_item.match_id)){
+								sb.append(" 普:" + money.zyl);
+							}else if("2".equals(stock_acct_item.match_id)){
+								sb.append(" 中:" + money.zyl);
+							}else if("3".equals(stock_acct_item.match_id)){
+								sb.append(" 大:" + money.zyl);
+							}
+							
+						}
+						
+					}
+					
+					ai.updatePeopleMoney(people_userid, sb.toString());
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		//step5: find actions in loop 
 		while(stop){
 			for(Entry<String, RespGetAccount>  item : ai.people_accounts.entrySet()){
 				String people_userid = item.getKey();
@@ -121,7 +153,7 @@ public class YouguScanThread extends Thread {
 								}
 							}
 						}
-						TipWindowHelper.getInstance().show(newPeopleActions);
+						TipWindowHelper.getInstance().show(ai.getZYL(people_userid), newPeopleActions);
 						
 					}
 				}catch(Exception e){
