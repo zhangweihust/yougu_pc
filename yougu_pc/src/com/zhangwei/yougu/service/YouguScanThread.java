@@ -1,5 +1,6 @@
 package com.zhangwei.yougu.service;
 
+import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import com.zhangwei.yougu.androidconvert.Log;
@@ -90,19 +91,22 @@ public class YouguScanThread extends Thread {
 					for(RespGetAccount_item stock_acct_item:stock_acct.result){
 						Response.RespFindActionListByTimeVip action = API.FindActionListByTimeVip(Product_ID, userid, sessionid, people_userid, stock_acct_item.match_id);
 						if("0000".equals(action.status)){
-							if(action.result!=null && action.result.length>0){
-								for(RespFindActionListByTimeVip_item action_item: action.result){
-									Log.i(TAG, "FindActionListByTimeVip ok :" + action_item.text + ", aid:" + action_item.aid + ", id:" + action_item.id);
+							ArrayList<RespFindActionListByTimeVip_item> newActions = ai.updatePeopleAction(userid + "_" + stock_acct_item.match_id, action);
+							if(newActions!=null && newActions.size()>0){
+								for(RespFindActionListByTimeVip_item  newActionItem : newActions){
+									Log.e(TAG, "new actions:" + newActionItem.text);
 								}
 								
 							}
-							
 						}
 					}
+					
+
 					
 				}
 			}
 			
+			ai.persist();
 			
 			try {
 				Thread.sleep(60000);
@@ -114,6 +118,6 @@ public class YouguScanThread extends Thread {
 
 		
 		
-		ai.persist();
+
 	}
 }

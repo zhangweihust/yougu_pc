@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 import com.zhangwei.yougu.androidconvert.Log;
 import com.zhangwei.yougu.pojo.Response;
+import com.zhangwei.yougu.pojo.Response.RespFindActionListByTimeVip;
+import com.zhangwei.yougu.pojo.Response.RespFindActionListByTimeVip_item;
 import com.zhangwei.yougu.pojo.Response.RespGetAccount;
 import com.zhangwei.yougu.pojo.Response.RespGetAccount_item;
 import com.zhangwei.yougu.pojo.Response.RespShowMyAttation_item;
@@ -28,6 +30,7 @@ public class AccountInfo {
 	
 	public ArrayList<RespShowMyAttation_item> my_attations;
 	public HashMap<String, RespGetAccount> people_accounts;
+	public HashMap<String, ActionsRecord> people_actions;
 	
 	
 	
@@ -48,6 +51,7 @@ public class AccountInfo {
 	private AccountInfo(){
 		my_attations = new ArrayList<RespShowMyAttation_item>();
 		people_accounts = new HashMap<String, RespGetAccount>();
+		people_actions = new HashMap<String, ActionsRecord>();
 	}
 	
 	synchronized public boolean isLogin(){
@@ -70,6 +74,33 @@ public class AccountInfo {
 		if(target_userid!=null && account!=null && "0000".equals(account.status)){
 			people_accounts.put(target_userid, account);
 		}
+	}
+	
+	/**
+	 * @return 返回不在缓存中的操作记录，也就是新操作记录
+	 * */
+	synchronized public ArrayList<RespFindActionListByTimeVip_item> updatePeopleAction(String key, RespFindActionListByTimeVip actions){
+		ArrayList<RespFindActionListByTimeVip_item> ret = new ArrayList<RespFindActionListByTimeVip_item>();
+		if(actions!=null && "0000".equals(actions.status) && actions.result!=null && actions.result.length>0){
+			ActionsRecord ar = null;
+			for(RespFindActionListByTimeVip_item action_item : actions.result){
+				ar = people_actions.get(key);
+				if(ar==null){
+					ar = new ActionsRecord();
+					people_actions.put(key, ar);
+				}
+				boolean flag = ar.add(action_item);
+				if(!flag){
+					ret.add(action_item);
+				}
+			}
+			
+
+
+		}
+
+		
+		return ret;
 	}
 	
 	synchronized public void clear(){
