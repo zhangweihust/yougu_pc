@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import com.zhangwei.yougu.androidconvert.Log;
 import com.zhangwei.yougu.api.API;
+import com.zhangwei.yougu.api.TimeHelper;
 import com.zhangwei.yougu.pojo.Response;
 import com.zhangwei.yougu.pojo.Response.RespFindActionListByTimeVip_item;
 import com.zhangwei.yougu.pojo.Response.RespGetAccount;
@@ -40,100 +41,117 @@ public class YouguScanThread extends Thread {
 	public void run() {
 		AccountInfo ai = AccountInfo.getInstance();
 		
-		//step1: login:
-		Response.RespLogin resp = null;
-		try{
-		    resp = API.Login(Product_ID, my_username, my_passwd, my_sessionid);
-
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		if(resp!=null && "0000".equals(resp.status)){
-			my_sessionid = resp.sessionid;
-			my_userid = resp.userid;
-			if(!ai.isLogin()){
-				ai.my_username = my_username;
-				ai.my_passwd = my_passwd;
-				ai.my_sessionid = my_sessionid;
-				ai.my_userid = my_userid;
-			}
-			Log.i(TAG, "login ok!");
-		}else{
-			Log.e(TAG, "login failed, exit");
-			return;
-		}
-		
-		//reset accountinfo
-		ai.clear();
-		
-		//step2: get my attation people
-		Response.RespShowMyAttation resp_my_attation = null;
-		try{
-			resp_my_attation = API.ShowMyAttention(Product_ID, my_sessionid, my_userid);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		if(resp_my_attation!=null && "0000".equals(resp_my_attation.status)){
-			Log.i(TAG, "ShowMyAttention ok!");
-			ai.updateShowMyAttation(resp_my_attation);
-		}else{
-			Log.e(TAG, "ShowMyAttention fail!");
-			return;
-		}
-		
-		//step3: get the people's account info
-		try{
-			for(RespShowMyAttation_item attation : ai.my_attations){
-				Response.RespGetAccount stock_acct = API.GetAllAccounts(Product_ID, attation.userid, my_userid, my_sessionid);
-				if("0000".equals(stock_acct.status)){
-					Log.i(TAG, "GetAllAccounts ok :" + attation.nickname);
-					ai.updatePeopleAccount(attation.userid, stock_acct);
-
-				}else{
-					Log.e(TAG, "GetAllAccounts fail :" + attation.nickname);
-				}			
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		//step4: get people's money 
-		for(Entry<String, RespGetAccount>  item : ai.people_accounts.entrySet()){
-			String people_userid = item.getKey();
-			RespGetAccount stock_acct = item.getValue();
-			try{
-				if(stock_acct!=null && stock_acct.result!=null && stock_acct.result.length>0){
-					StringBuilder sb = new StringBuilder();
-					for(RespGetAccount_item stock_acct_item:stock_acct.result){
-						RespShowMyMoney money = API.ShowMyMoney(Product_ID, my_sessionid, my_userid, people_userid, stock_acct_item.match_id);
-					
-						if("0000".equals(money.status)){
-							if("1".equals(stock_acct_item.match_id)){
-								sb.append(" 普:" + money.zyl);
-							}else if("2".equals(stock_acct_item.match_id)){
-								sb.append(" 中:" + money.zyl);
-							}else if("3".equals(stock_acct_item.match_id)){
-								sb.append(" 大:" + money.zyl);
-							}
-							
-						}
-						
-					}
-					
-					ai.updatePeopleMoney(people_userid, sb.toString());
-				}
-				
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-		}
-		
-		TipWindowHelper.getInstance().clear();
+		ai.logout();
 		
 		//step5: find actions in loop 
 		while(stop){
+			try {
+				Thread.sleep(30000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(TimeHelper.isTradeTime()>0){
+				break;
+			}else if(TimeHelper.isTradeTime()<0){
+				continue;
+			}
+			
+			
+			if(!ai.isLogin()){
+				//step1: login:
+				Response.RespLogin resp = null;
+				try{
+				    resp = API.Login(Product_ID, my_username, my_passwd, my_sessionid);
+
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				if(resp!=null && "0000".equals(resp.status)){
+					my_sessionid = resp.sessionid;
+					my_userid = resp.userid;
+					if(!ai.isLogin()){
+						ai.my_username = my_username;
+						ai.my_passwd = my_passwd;
+						ai.my_sessionid = my_sessionid;
+						ai.my_userid = my_userid;
+					}
+					Log.i(TAG, "login ok!");
+				}else{
+					Log.e(TAG, "login failed, exit");
+					return;
+				}
+				
+				//reset accountinfo
+				ai.clear();
+				
+				//step2: get my attation people
+				Response.RespShowMyAttation resp_my_attation = null;
+				try{
+					resp_my_attation = API.ShowMyAttention(Product_ID, my_sessionid, my_userid);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				if(resp_my_attation!=null && "0000".equals(resp_my_attation.status)){
+					Log.i(TAG, "ShowMyAttention ok!");
+					ai.updateShowMyAttation(resp_my_attation);
+				}else{
+					Log.e(TAG, "ShowMyAttention fail!");
+					return;
+				}
+				
+				//step3: get the people's account info
+				try{
+					for(RespShowMyAttation_item attation : ai.my_attations){
+						Response.RespGetAccount stock_acct = API.GetAllAccounts(Product_ID, attation.userid, my_userid, my_sessionid);
+						if("0000".equals(stock_acct.status)){
+							Log.i(TAG, "GetAllAccounts ok :" + attation.nickname);
+							ai.updatePeopleAccount(attation.userid, stock_acct);
+
+						}else{
+							Log.e(TAG, "GetAllAccounts fail :" + attation.nickname);
+						}			
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				//step4: get people's money 
+				for(Entry<String, RespGetAccount>  item : ai.people_accounts.entrySet()){
+					String people_userid = item.getKey();
+					RespGetAccount stock_acct = item.getValue();
+					try{
+						if(stock_acct!=null && stock_acct.result!=null && stock_acct.result.length>0){
+							StringBuilder sb = new StringBuilder();
+							for(RespGetAccount_item stock_acct_item:stock_acct.result){
+								RespShowMyMoney money = API.ShowMyMoney(Product_ID, my_sessionid, my_userid, people_userid, stock_acct_item.match_id);
+							
+								if("0000".equals(money.status)){
+									if("1".equals(stock_acct_item.match_id)){
+										sb.append(" 普:" + money.zyl);
+									}else if("2".equals(stock_acct_item.match_id)){
+										sb.append(" 中:" + money.zyl);
+									}else if("3".equals(stock_acct_item.match_id)){
+										sb.append(" 大:" + money.zyl);
+									}
+									
+								}
+								
+							}
+							
+							ai.updatePeopleMoney(people_userid, sb.toString());
+						}
+						
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+				
+				TipWindowHelper.getInstance().clear();
+			}
 
 			for(Entry<String, RespGetAccount>  item : ai.people_accounts.entrySet()){
 				String people_userid = item.getKey();
@@ -153,6 +171,9 @@ public class YouguScanThread extends Thread {
 									newPeopleActions.addAll(newActions);
 									
 								}
+							}else{
+								ai.logout();
+								break;
 							}
 						}
 						TipWindowHelper.getInstance().show(ai.getZYL(people_userid), newPeopleActions);
@@ -166,12 +187,7 @@ public class YouguScanThread extends Thread {
 			
 			ai.persist();
 
-			try {
-				Thread.sleep(30000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
 		}
 
 		

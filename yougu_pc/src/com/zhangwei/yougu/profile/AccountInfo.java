@@ -139,5 +139,10 @@ public class AccountInfo {
 		SDCardStorageManager.getInstance().putItem(null, AccountInfoKey, ins, AccountInfo.class);
 	}
 
+	public void logout() {
+		// TODO Auto-generated method stub
+		my_sessionid = null;
+	}
+
 
 }
