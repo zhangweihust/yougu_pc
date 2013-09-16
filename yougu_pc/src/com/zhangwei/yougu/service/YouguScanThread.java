@@ -54,7 +54,7 @@ public class YouguScanThread extends Thread {
 		while(stop){
 			if(!init_run){
 				try {
-					Thread.sleep(30000);
+					Thread.sleep(60000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
