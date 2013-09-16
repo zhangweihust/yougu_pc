@@ -1,5 +1,6 @@
 package com.zhangwei.yougu.api;
 
+import java.nio.charset.Charset;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -206,7 +207,7 @@ public class API {
 		byte[] ret =  XmlBase64W.decode(RequestHelper.getInstance().Get("user.youguu.com", url, sessionid, null, Product_ID, null, null));
 
 		Gson gson = new Gson();
-		return gson.fromJson(new String(ret), Response.RespLogin.class);
+		return gson.fromJson(new String(ret, Charset.forName("UTF-8")), Response.RespLogin.class);
 	}
 	
 	/**
@@ -232,7 +233,7 @@ public class API {
 */
 		
 		Gson gson = new Gson();
-		return gson.fromJson(new String(ret), Response.RespGetAccount.class);
+		return gson.fromJson(new String(ret, Charset.forName("UTF-8")), Response.RespGetAccount.class);
 	}
 	
 	/**
@@ -269,7 +270,7 @@ public class API {
 		/**{"cgsz":"111241.00","fdyk":"11844.67","message":"查询成功.","rank":41668,"resetTip":0,"status":"0000","vipTip":0,"vipValidDays":0,"zjye":"638.22","zyl":"11.88%","zzc":"111879.22"}*/
 		
 		Gson gson = new Gson();
-		return gson.fromJson(new String(ret), Response.RespShowMyMoney.class);
+		return gson.fromJson(new String(ret, Charset.forName("UTF-8")), Response.RespShowMyMoney.class);
 	
 	}
 	
@@ -336,7 +337,7 @@ public class API {
 		
 		byte[] ret = XmlBase64W.decode(RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null));
 		Gson gson = new Gson();
-		return gson.fromJson(new String(ret), Response.RespShowMyAttation.class);
+		return gson.fromJson(new String(ret, Charset.forName("UTF-8")), Response.RespShowMyAttation.class);
 	}
 	
 	
@@ -369,7 +370,7 @@ public class API {
 		byte[] ret =  XmlBase64W.decode(RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null));
 //{"status":"0000","message":"持仓查询成功.","result":[{"cbj":"8.84","closePrice":"9.03","djs":"0","dqcb":"47740347.75","gfye":"5397500","kygf":"5397500","markUp":"-5.65%","stockCode":"600708","stockName":"海博股份","yk":"-1753645.28","ykl":"-3.67%","zts":"0","zxj":"8.52","zxsz":"45986702.47"}]}
 		Gson gson = new Gson();
-		return gson.fromJson(new String(ret), Response.RespShowMyStock.class);
+		return gson.fromJson(new String(ret, Charset.forName("UTF-8")), Response.RespShowMyStock.class);
 	}
 	
 	/**
@@ -407,6 +408,6 @@ public class API {
 		byte[] ret = XmlBase64W.decode(RequestHelper.getInstance().Get("mncg.youguu.com", url, sessionid, my_userid, Product_ID, null, null));
 		
 		Gson gson = new Gson();
-		return gson.fromJson(new String(ret), Response.RespFindActionListByTimeVip.class);
+		return gson.fromJson(new String(ret, Charset.forName("UTF-8")), Response.RespFindActionListByTimeVip.class);
 	}
 }

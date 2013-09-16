@@ -25,12 +25,19 @@ public class YouguScanThread extends Thread {
 	public final String imei = "862620027046913";
 	public final String Product_ID = "403001006";
 	private boolean stop;
+	private boolean init_run = false;
 
 	
 	public YouguScanThread(String username, String passwd){
 		this.my_username = username;
 		this.my_passwd = passwd;
 		this.stop = true;
+	}
+	
+	public void startThread(){
+		init_run  = true;
+
+		this.start();
 	}
 	
 	public void stopThread(){
@@ -45,12 +52,15 @@ public class YouguScanThread extends Thread {
 		
 		//step5: find actions in loop 
 		while(stop){
-			try {
-				Thread.sleep(30000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(!init_run){
+				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+
 			
 			if(TimeHelper.isTradeTime()>0){
 				break;
@@ -187,7 +197,7 @@ public class YouguScanThread extends Thread {
 			
 			ai.persist();
 
-
+			init_run = false;
 		}
 
 		

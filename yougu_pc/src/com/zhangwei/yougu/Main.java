@@ -8,6 +8,6 @@ public class Main {
 
 		
 		YouguScanThread t = new YouguScanThread("zweric", "654321");
-		t.start();
+		t.startThread();
 	}
 }
