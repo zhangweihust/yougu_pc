@@ -7,7 +7,7 @@ import com.zhangwei.yougu.androidconvert.Log;
 
 public class XmlBase64W extends XmlBase64 {
 	private static final String TAG = "XmlBase64W";
-	private static final boolean debug = false;
+	private static final boolean debug = true;
 
 	public XmlBase64W() {
 		super();

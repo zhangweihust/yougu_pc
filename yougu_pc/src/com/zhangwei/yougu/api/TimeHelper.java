@@ -41,7 +41,7 @@ public class TimeHelper {
     	 if(getWeekOfDate()==Calendar.SUNDAY || getWeekOfDate()==Calendar.SATURDAY){
      		return 1;
      	}else{
-     		if(date_str.compareTo("0930") <0){
+     		if(date_str.compareTo("0830") <0){
         		return -1;
         	}else if(date_str.compareTo("1500")>0){
         		return 1;
