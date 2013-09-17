@@ -119,8 +119,10 @@ public class TipWindowHelper {
 		tw.init(tw, str_title, str_action, str_content_title, str_content, urls, date);
 		
 		tw.run();
-		
-		cur_add_size_y+=5;
+		if(cur_add_size_y<500){
+			cur_add_size_y+=5;
+		}
+
 	}
 	
 	public void clear(){

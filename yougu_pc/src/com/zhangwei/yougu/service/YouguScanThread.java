@@ -162,6 +162,8 @@ public class YouguScanThread extends Thread {
 				
 				TipWindowHelper.getInstance().clear();
 			}
+			
+			TipWindowHelper.getInstance().cur_add_size_y = 0;
 
 			for(Entry<String, RespGetAccount>  item : ai.people_accounts.entrySet()){
 				String people_userid = item.getKey();
